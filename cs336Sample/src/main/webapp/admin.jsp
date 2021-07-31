@@ -8,5 +8,9 @@
 </head>
 <body>
 
+Welcome back, Admin.
+<br>
+<br>
+	<a href="loginPage.jsp"> <input type="submit" value="Logout" />
 </body>
 </html>

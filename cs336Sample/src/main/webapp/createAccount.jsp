@@ -27,6 +27,10 @@
 		String newUser = request.getParameter("username");
 		String newPassword = request.getParameter("password");
 
+		if (newName.isEmpty()|| newEmail.isEmpty()|| newAddress.isEmpty() || newUser.isEmpty() || newPassword.isEmpty() ){
+			out.println("Please make sure all fields are filled.");
+		
+		}else{
 		
 		String userType = "end";
 		
@@ -50,10 +54,7 @@
 	        numberRow = result.getInt("COUNT(*)");
 	    }
 		
-		if (newName.isEmpty()|| newEmail.isEmpty()|| newAddress.isEmpty() || newUser.isEmpty() || newPassword.isEmpty() ){
-			out.println("Please make sure all fields are filled.");
-			throw new Exception();
-		}
+		
 	//	int val = (int)result.get
 	//	out.print(val);
 
@@ -79,10 +80,11 @@
 		con.close();
 
 		out.print("You have successfully created account. Please proceed to login.");
+		}
 		
 	} catch (Exception ex) {
 		out.println(ex);
-		out.println("Insert failed :()");
+	//	out.println("Insert failed :()");
 	}
 %>
 </body>

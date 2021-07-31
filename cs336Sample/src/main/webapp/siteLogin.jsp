@@ -14,7 +14,7 @@
 	try {
 
 		//Get the database connection
-		ApplicationDB db = new ApplicationDB();	
+		ApplicationDB db = new ApplicationDB();
 		Connection con = db.getConnection();
 
 		//Create a SQL statement
@@ -23,41 +23,53 @@
 		//Get parameters from the HTML form at the HelloWorld.jsp
 		String newUser = request.getParameter("username");
 		String newPassword = request.getParameter("password");
-	
-		String checkUser = "SELECT EXISTS(SELECT * from user WHERE username = '" + newUser + "' and password = '" + newPassword + "') exist";
+
+		String checkUser = "SELECT EXISTS(SELECT * from user WHERE username = '" + newUser + "' and password = '"
+		+ newPassword + "') exist";
 		ResultSet result1 = stmt.executeQuery(checkUser);
 		int exists = 0;
-		while(result1.next()){
-	        exists = result1.getInt("exist");
-	    }
-		if (exists == 1){ //username and password are correct. user has successfully logged in.
-		
-			String getName = "SELECT name FROM user WHERE username = '" + newUser + "' and password = '" + newPassword + "'";
+		while (result1.next()) {
+			exists = result1.getInt("exist");
+		}
+		if (exists == 1) { //username and password are correct. user has successfully logged in.
+
+			String getName = "SELECT name FROM user WHERE username = '" + newUser + "' and password = '" + newPassword
+			+ "'";
 			ResultSet result2 = stmt.executeQuery(getName);
-			while(result2.next()){
-		        out.println("Welcome back, "+ result2.getString("name") + ". ");
-		    }
-			
-		}else if (exists == 0){ //username doesn't match password. prompts user to enter new credentials.
+			while (result2.next()) {
+		session.setAttribute("username", newUser);
+		String getType = "SELECT type FROM user WHERE username = '" + newUser + "' and password = '" + newPassword
+				+ "'";
+		ResultSet type = stmt.executeQuery(getType);
+		while (type.next()) {
+			if (type.getString("type").equals("end")) {
+				response.sendRedirect("endUser.jsp");
+			} else if (type.getString("type").equals("rep")) {
+				response.sendRedirect("customerRep.jsp");
+			} else if (type.getString("type").equals("admin")) {
+				response.sendRedirect("admin.jsp");
+			}
+		}
+
+		//  response.sendRedirect("welcome.jsp");
+		//   out.println("Welcome back, "+ result2.getString("name") + ". ");
+			}
+
+		} else if (exists == 0) { //username doesn't match password. prompts user to enter new credentials.
 			out.println("Username or password is incorrect. Please try again.");
 		}
-		
-		
 
 		//Close the connection. Don't forget to do it, otherwise you're keeping the resources of the server allocated.
 		con.close();
 
-		
 	} catch (Exception ex) {
 		out.println(ex);
-		
-	}
-%>
 
-<br>
-<br>
-<a href="loginPage.jsp">
-       <input type="submit" value= "Logout"/>
-       
+	}
+	%>
+
+	<br>
+	<br>
+
 </body>
 </html>
