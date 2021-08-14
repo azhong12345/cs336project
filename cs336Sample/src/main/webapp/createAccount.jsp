@@ -20,7 +20,7 @@
 		//Create a SQL statement
 		Statement stmt = con.createStatement();
 
-		//Get parameters from the HTML form at the HelloWorld.jsp
+		//Get parameters from the HTML form at the createAccount.jsp
 		String newName = request.getParameter("name");
 		String newEmail = request.getParameter("email");
 		String newAddress = request.getParameter("address");
@@ -45,7 +45,6 @@
 			throw new Exception();
 		}
 		
-		//Make a SELECT query from the table specified by the 'command' parameter at the index.jsp
 		String str = "SELECT COUNT(*) FROM user";
 		//Run the query against the database.
 		ResultSet result = stmt.executeQuery(str);
@@ -54,8 +53,7 @@
 	        numberRow = result.getInt("COUNT(*)");
 	    }
 		
-		//Make an insert statement for the Sells table:
-		String insert = "INSERT INTO user(name, email, address, username, password, type, id)"
+		String insert = "INSERT INTO user(name, email, address, username, password, type)"
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 		//Create a Prepared SQL statement allowing you to introduce the parameters of the query
 		PreparedStatement ps = con.prepareStatement(insert);
@@ -67,7 +65,6 @@
 		ps.setString(4, newUser);
 		ps.setString(5, newPassword);
 		ps.setString(6, userType);
-		ps.setInt(7, numberRow+1000);
 		
 		//Run the query against the DB
 		ps.executeUpdate();

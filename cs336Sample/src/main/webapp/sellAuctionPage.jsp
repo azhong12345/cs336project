@@ -18,22 +18,22 @@
 		<table>
 
 			<tr>
-				<td>Initial Price</td>
+				<td>Initial Price (Please enter dollar amounts):</td>
 				<td><input type="number" min="0.00" step="0.01"
 					name="initprice"></td>
 			</tr>
 
 			<tr>
-				<td>Minimum Price</td>
+				<td>Minimum Price:</td>
 				<td><input type="number" min="0.00" step="0.01" name="minprice"></td>
 			</tr>
 			<tr>
-				<td>Bid Increment</td>
+				<td>Bid Increment:</td>
 				<td><input type="number" min="0.00" step="0.01"
 					name="increment"></td>
 			</tr>
 			<tr>
-				<td>Closing Date</td>
+				<td>Closing Date (Please enter as "YYYY-MM-DD HH:mm:ss"):</td>
 				<td><input type="text" name="closedate"></td>
 			</tr>
 
