@@ -6,13 +6,28 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+<style>
+input[type=submit] {
+    padding:10px 20px; 
+    background:#ccc; 
+    border: 2px black;
+    font-size: 15px;
+    font-family: arial;
+    border-radius: 5px; 
+}
+</style>
 	<head>
+	<link rel="stylesheet" type="text/css" href="endUser.css">
+	
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		
 		<title>Login to BuyMe</title>
 	</head>
 	
 	<body>
-							  
+	
+		<%session.setAttribute("isLoggedIn", false); %>		
+					  
 		<br>Welcome to BuyMe! Please sign in to your account to get started. <br>
 		<br>
 		

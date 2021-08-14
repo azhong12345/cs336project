@@ -19,6 +19,7 @@
 
 		//Create a SQL statement
 		Statement stmt = con.createStatement();
+		
 
 		//Get parameters from the HTML form at the HelloWorld.jsp
 		String newUser = request.getParameter("username");
@@ -33,6 +34,8 @@
 		}
 		if (exists == 1) { //username and password are correct. user has successfully logged in.
 
+			session.setAttribute("isLoggedIn", true);
+		
 			String getName = "SELECT name FROM user WHERE username = '" + newUser + "' and password = '" + newPassword
 			+ "'";
 			ResultSet result2 = stmt.executeQuery(getName);
@@ -43,10 +46,13 @@
 		ResultSet type = stmt.executeQuery(getType);
 		while (type.next()) {
 			if (type.getString("type").equals("end")) {
+				session.setAttribute("usertype", "end");
 				response.sendRedirect("endUser.jsp");
 			} else if (type.getString("type").equals("rep")) {
+				session.setAttribute("usertype", "rep");
 				response.sendRedirect("customerRep.jsp");
 			} else if (type.getString("type").equals("admin")) {
+				session.setAttribute("usertype", "admin");
 				response.sendRedirect("admin.jsp");
 			}
 		}

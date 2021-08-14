@@ -5,65 +5,118 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Insert title here</title>
-	</head>
-	<body>
-		<% try {
-	
-			//Get the database connection
-			ApplicationDB db = new ApplicationDB();	
-			Connection con = db.getConnection();		
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<%
+	try {
 
-			//Create a SQL statement
-			Statement stmt = con.createStatement();
-			//Get the selected radio button from the index.jsp
-			String entity = request.getParameter("command");
-			//Make a SELECT query from the table specified by the 'command' parameter at the index.jsp
-			String str = "SELECT * FROM " + entity;
-			//Run the query against the database.
-			ResultSet result = stmt.executeQuery(str);
-		%>
-			
-		<!--  Make an HTML table to show the results in: -->
+		//Get the database connection
+		ApplicationDB db = new ApplicationDB();
+		Connection con = db.getConnection();
+
+		Statement stmt1 = con.createStatement();
+		String str1 = "CREATE VIEW END_VIEW AS SELECT a.itemID, c.name FROM auction a, clothing c WHERE a.itemID = c.itemID";
+		stmt1.executeQuery(str1);
+		//Create a SQL statement
+		Statement stmt = con.createStatement();
+		//Get the selected radio button from the index.jsp
+		//	String entity = request.getParameter("command");
+		//Make a SELECT query from the table specified by the 'command' parameter at the index.jsp
+		String str = "SELECT * FROM END_VIEW";
+		//Run the query against the database.
+		ResultSet result = stmt.executeQuery(str);
+	%>
+
+	<!--  Make an HTML table to show the results in: -->
 	<table>
-		<tr>    
+		<tr>
+			<td>Name</td>
+			<td>ItemID</td>
+		</tr>
+		<%
+		//parse out the results
+		while (result.next()) {
+		%>
+		<tr>
+			<td><%=result.getString("name")%></td>
+			<td><%=result.getString("itemID")%></td>
+		</tr>
+
+		<%
+		}
+		//close the connection.
+		db.closeConnection(con);
+		%>
+	</table>
+
+	<%
+	} catch (Exception e) {
+	out.print(e);
+	}
+	%>
+
+	<%
+	try { //Get the database connection 
+		ApplicationDB db = new ApplicationDB();
+		Connection con = db.getConnection(); //Create a SQL statement 
+		Statement stmt = con.createStatement();
+		//Get the selected radio button from the index.jsp 
+		String entity = request.getParameter("command"); //Make a SELECT query from the table specified by the 'command' parameter at the index.jsp 
+		String str = "SELECT * FROM " + entity; //Run the query against the database.
+		ResultSet result = stmt.executeQuery(str);
+	%>
+
+	<!--  Make an HTML table to show the results in: -->
+	<table>
+		<tr>
 			<td>Name</td>
 			<td>
-				<%if (entity.equals("beers"))
+				<%
+				if (entity.equals("beers"))
 					out.print("Manufacturer");
 				else
 					out.print("Address");
 				%>
 			</td>
 		</tr>
-			<%
-			//parse out the results
-			while (result.next()) { %>
-				<tr>    
-					<td><%= result.getString("name") %></td>
-					<td>
-						<% if (entity.equals("beers")){ %>
-							<%= result.getString("manf")%>
-						<% }else{ %>
-							<%= result.getString("addr")%>
-						<% } %>
-					</td>
-				</tr>
-				
+		<%
+		//parse out the results
+		while (result.next()) {
+		%>
+		<tr>
+			<td><%=result.getString("name")%></td>
+			<td>
+				<%
+				if (entity.equals("beers")) {
+				%> <%=result.getString("manf")%> <%
+ } else {
+ %>
+				<%=result.getString("addr")%> <%
+ }
+ %>
+			</td>
+		</tr>
 
-			<% }
-			//close the connection.
-			db.closeConnection(con);
-			%>
-		</table>
 
-			
-		<%} catch (Exception e) {
-			out.print(e);
-		}%>
-	
+		<%
+		}
+		//close the connection.
+		db.closeConnection(con);
+		%>
+	</table>
 
-	</body>
+
+	<%
+	} catch (Exception e) {
+	out.print(e);
+	}
+	%>
+
+
+
+
+</body>
 </html>
