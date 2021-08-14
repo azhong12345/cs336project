@@ -61,26 +61,6 @@
 
 		}
 
-		/*
-		//Make an insert statement for the Sells table:
-		String insert = "INSERT INTO clothing(name, gender, brand)" + "VALUES (?, ?, ?)";
-		//Create a Prepared SQL statement allowing you to introduce the parameters of the query
-		PreparedStatement ps = con.prepareStatement(insert);
-		
-		//Add parameters of the query. Start with 1, the 0-parameter is the INSERT statement itself
-		ps.setString(1, itemName);
-		ps.setString(2, gender);
-		ps.setString(3, brand);
-		//	ps.setString(4, type);
-		//	ps.setString(5, initprice);
-		//	ps.setString(6, increment);
-		//	ps.setString(7, closedate);
-		
-		//Run the query against the DB
-		ps.executeUpdate();
-		
-		*/
-
 		//Close the connection.
 		con.close();
 

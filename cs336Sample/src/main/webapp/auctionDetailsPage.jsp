@@ -31,6 +31,10 @@
 
 	<br>
 
+	Countdown Timer:<p id="countdown"></p>
+	Auction Status:<p id="active"></p>
+	
+	
 	<%
 	try { //Get the database connection 
 		ApplicationDB db = new ApplicationDB();
@@ -52,6 +56,8 @@
 		String length = "N/A";
 		String style = "N/A";
 		String bidder = "";
+		
+	//	java.util.Date close= new java.util.Date();
 
 		String num = request.getParameter("id");
 		String str1 = "SELECT itemID, username, open_date, close_date, current_price, bid_increment, current_bidder FROM auction WHERE auctionID = '"
@@ -65,7 +71,21 @@
 			price = rs1.getString("current_price");
 			increment = rs1.getString("bid_increment");
 			bidder = rs1.getString("current_bidder");
+		//	rs1.get
 		}
+		
+		
+		java.util.Date date = new java.util.Date();
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String currentDateTime = sdf.format(date);
+		
+		close = close.substring(0, 19);
+		
+		//close = close.substring(0, str.indexOf('.'));
+		session.setAttribute("closedate", close);
+	 
+		
 
 		String str2 = "SELECT name, gender, brand, type FROM clothing WHERE itemID = '" + itemid + "'";
 		ResultSet rs2 = stmt.executeQuery(str2);
@@ -109,8 +129,8 @@
 		//	ResultSet result = stmt.executeQuery(str);
 	%>
 
+	
 	<table>
-
 		<tr>
 			<td>Item Name:</td>
 			<td><%=name%></td>
@@ -189,14 +209,67 @@
 
 		<input type="submit" value="Place Bid">
 	</form>
+	
+<script>
 
+document.getElementById("active").innerHTML = "OPEN";
+
+
+// Set the date we're counting down to
+var closeDate = new Date((String)session.getAttribute("closedate").getTime();
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date.getTime();
+  
+  document.getElementById("countdown").innerHTML = closeDate;
+  
+
+  // Find the distance between now and the count down date
+ // var distance = closeDate - now;
+  var distance = Date.parse((String)session.getAttribute("closedate")) - Date.parse(new Date()); 
+  
+  session.setAttribute("temp", closeDate);
+  session.setAttribute("temp1", distance);
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="countdown"
+  document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+
+  // If the count down is finished, write some text
+  if (distance < 0) {
+    clearInterval(x);
+    
+  //  session.setAttribute("isActive", "CLOSED");
+    document.getElementById("active").innerHTML = "CLOSED";
+  }
+}, 1000);
+
+</script>
+
+<p>
+ <%= session.getAttribute("closedate")%></p>
+ <p>
+
+<p>
+ <%= session.getAttribute("temp")%></p>
+ <p>
+ 
+<p>
+ <%= session.getAttribute("temp2")%></p>
+ <p>
+ 
 	<%
 	} catch (Exception e) {
 	out.print(e);
 	}
 	%>
-
-
 
 
 </body>

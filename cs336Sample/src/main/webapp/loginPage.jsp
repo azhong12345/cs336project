@@ -18,6 +18,7 @@
 <body>
 
 	<%
+	
 	session.setAttribute("isLoggedIn", false);
 	%>
 

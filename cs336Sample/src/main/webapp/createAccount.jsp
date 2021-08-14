@@ -54,10 +54,6 @@
 	        numberRow = result.getInt("COUNT(*)");
 	    }
 		
-		
-	//	int val = (int)result.get
-	//	out.print(val);
-
 		//Make an insert statement for the Sells table:
 		String insert = "INSERT INTO user(name, email, address, username, password, type, id)"
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -86,7 +82,6 @@
 		
 	} catch (Exception ex) {
 		out.println(ex);
-	//	out.println("Insert failed :()");
 	}
 %>
 </body>

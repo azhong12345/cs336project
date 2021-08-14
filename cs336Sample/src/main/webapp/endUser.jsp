@@ -36,8 +36,13 @@ try { //Get the database connection
 	Statement stmt = con.createStatement();
 
 	//Get the selected radio button from the index.jsp 
-	//String entity = request.getParameter("command"); //Make a SELECT query from the table specified by the 'command' parameter at the index.jsp 
-	String str = "SELECT * FROM end_view"; //Run the query against the database.
+	//Get the list of all available auctions (with closing date later than the current date)
+	java.util.Date date = new java.util.Date();
+	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+	String currentDateTime = sdf.format(date);
+	
+	String str = "SELECT * FROM end_view WHERE auctionID IN (SELECT auctionID FROM auction WHERE '"+ currentDateTime + "' < close_date)"; 
 	ResultSet result = stmt.executeQuery(str);
 %>
 
