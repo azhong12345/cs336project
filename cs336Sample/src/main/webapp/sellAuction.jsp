@@ -42,10 +42,10 @@
 			PreparedStatement ps = con.prepareStatement(insert);
 
 			java.util.Date date = new java.util.Date();
-			java.text.SimpleDateFormat sdf =   new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 			String currentDateTime = sdf.format(date);
-			
+
 			//Add parameters of the query.
 			ps.setInt(1, itemID);
 			ps.setString(2, (String) session.getAttribute("username"));
@@ -56,7 +56,6 @@
 			ps.setString(7, minprice);
 			ps.setString(8, initprice);
 
-			
 			ps.executeUpdate();
 			response.sendRedirect("auctionSuccess.jsp");
 

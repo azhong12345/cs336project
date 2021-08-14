@@ -25,6 +25,13 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
+h1 {
+  color: #4467b8;
+}
+h3 {
+	color: #53b888
+}
+
 /* Style the top navigation bar */
 .topnav {
   overflow: hidden;

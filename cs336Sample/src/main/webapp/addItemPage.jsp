@@ -22,7 +22,7 @@ input[type=submit] {
 	<a href="loginPage.jsp">Logout</a>
 </div>
 <body>
-	<p>What are you selling today? </p>
+	<h3>What are you selling today? </h3>
 	<form method="get" action="addItem.jsp">
 		<table>
 			<tr>

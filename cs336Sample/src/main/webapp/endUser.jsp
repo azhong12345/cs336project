@@ -6,23 +6,6 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 70%;
-}
-
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-</style>
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" >
@@ -38,8 +21,9 @@ tr:nth-child(even) {
 <body>
 
 <br>
-	Welcome back, ${username}! 
-	Browse for items or bid on open auctions.
+<h3 style="color: #53b888">Welcome back, ${username}! </h3>	
+<h3 style="color: #53b888">Browse for items or bid on open auctions.</h3>	
+	
 	
 	<br>
 	<br>
@@ -101,6 +85,7 @@ try { //Get the database connection
 		<tr>
 			<th>Item</th>
 			<th>Auction</th>
+			<th>Your Bid Price</th>
 			<th>Message</th>
 
 		</tr>
@@ -112,6 +97,7 @@ try { //Get the database connection
 		<tr>
 			<td><%=result2.getString("itemID")%></td>
 			<td><a href="auctionDetailsPage.jsp?id=<%=result2.getString("auctionID")%>"><%=result2.getString("auctionID")%></a></td>
+			<td><%=result2.getString("bid_price")%></td>
 			<td><%=result2.getString("message")%></td>
 
 

@@ -79,7 +79,9 @@
 		//Close the connection. Don't forget to do it, otherwise you're keeping the resources of the server allocated.
 		con.close();
 
-		out.print("You have successfully created account. Please proceed to login.");
+		session.setAttribute("username", newUser);
+		session.setAttribute("usertype", "end");
+		response.sendRedirect("endUser.jsp");
 		}
 		
 	} catch (Exception ex) {
