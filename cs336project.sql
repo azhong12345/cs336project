@@ -25,11 +25,15 @@ DROP TABLE IF EXISTS `alerts`;
 CREATE TABLE `alerts` (
   `username` varchar(30) NOT NULL,
   `itemID` int NOT NULL,
-  `isAvailable` int DEFAULT NULL,
-  PRIMARY KEY (`username`,`itemID`),
+  `auctionID` int NOT NULL,
+  `bid_price` decimal(10,2) NOT NULL,
+  `message` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`username`,`itemID`,`auctionID`,`bid_price`),
   KEY `itemID` (`itemID`),
+  KEY `auctionID` (`auctionID`),
   CONSTRAINT `alerts_ibfk_1` FOREIGN KEY (`username`) REFERENCES `user` (`username`),
-  CONSTRAINT `alerts_ibfk_2` FOREIGN KEY (`itemID`) REFERENCES `clothing` (`itemID`)
+  CONSTRAINT `alerts_ibfk_2` FOREIGN KEY (`itemID`) REFERENCES `clothing` (`itemID`),
+  CONSTRAINT `alerts_ibfk_3` FOREIGN KEY (`auctionID`) REFERENCES `auction` (`auctionID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -55,12 +59,20 @@ CREATE TABLE `auction` (
   `username` varchar(30) DEFAULT NULL,
   `open_date` datetime DEFAULT NULL,
   `close_date` datetime DEFAULT NULL,
+  `init_price` decimal(10,2) DEFAULT NULL,
+  `bid_increment` decimal(10,2) DEFAULT NULL,
+  `min_price` decimal(10,2) DEFAULT NULL,
+  `current_price` decimal(10,2) DEFAULT NULL,
+  `current_bidder` varchar(30) DEFAULT NULL,
+  `secret_max` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`auctionID`),
   KEY `itemID` (`itemID`),
   KEY `username` (`username`),
+  KEY `current_bidder` (`current_bidder`),
   CONSTRAINT `auction_ibfk_1` FOREIGN KEY (`itemID`) REFERENCES `clothing` (`itemID`),
-  CONSTRAINT `auction_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `auction_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`),
+  CONSTRAINT `auction_ibfk_3` FOREIGN KEY (`current_bidder`) REFERENCES `user` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,36 +81,8 @@ CREATE TABLE `auction` (
 
 LOCK TABLES `auction` WRITE;
 /*!40000 ALTER TABLE `auction` DISABLE KEYS */;
+INSERT INTO `auction` VALUES (1,12,'azhong','2021-08-12 21:04:40','2021-09-22 08:08:11',200.00,50.00,250.00,NULL,NULL,NULL),(2,13,'azhong','2021-08-12 21:28:40','2021-08-26 00:00:00',25.00,1.50,30.00,30.00,NULL,NULL),(3,14,NULL,'2021-08-13 00:01:19','2021-08-13 00:00:00',500.00,10.00,600.00,600.00,'azhong',NULL),(4,15,'azhong','2021-08-13 20:53:19','2021-08-23 00:00:00',5.00,2.00,5.00,19.00,'ms123',NULL);
 /*!40000 ALTER TABLE `auction` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `auto_bid`
---
-
-DROP TABLE IF EXISTS `auto_bid`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `auto_bid` (
-  `username` varchar(30) NOT NULL,
-  `auctionID` int NOT NULL,
-  `price` decimal(10,2) DEFAULT NULL,
-  `is_anon` int DEFAULT NULL,
-  `upper_limit` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`username`,`auctionID`,`upper_limit`),
-  KEY `auctionID` (`auctionID`),
-  CONSTRAINT `auto_bid_ibfk_1` FOREIGN KEY (`username`) REFERENCES `user` (`username`),
-  CONSTRAINT `auto_bid_ibfk_2` FOREIGN KEY (`auctionID`) REFERENCES `auction` (`auctionID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `auto_bid`
---
-
-LOCK TABLES `auto_bid` WRITE;
-/*!40000 ALTER TABLE `auto_bid` DISABLE KEYS */;
-/*!40000 ALTER TABLE `auto_bid` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -126,6 +110,7 @@ CREATE TABLE `bid` (
 
 LOCK TABLES `bid` WRITE;
 /*!40000 ALTER TABLE `bid` DISABLE KEYS */;
+INSERT INTO `bid` VALUES ('azhong',3,600.00,0),('mlou',4,7.00,0),('ms123',4,12.00,0),('ms123',4,15.00,0);
 /*!40000 ALTER TABLE `bid` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,8 +126,9 @@ CREATE TABLE `clothing` (
   `name` varchar(50) DEFAULT NULL,
   `gender` varchar(10) DEFAULT NULL,
   `brand` varchar(20) DEFAULT NULL,
+  `type` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`itemID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,7 +137,7 @@ CREATE TABLE `clothing` (
 
 LOCK TABLES `clothing` WRITE;
 /*!40000 ALTER TABLE `clothing` DISABLE KEYS */;
-INSERT INTO `clothing` VALUES (1,'summer dress',NULL,'gap'),(2,'dress',NULL,'gap'),(4,'jeans','men','levis');
+INSERT INTO `clothing` VALUES (1,'summer dress',NULL,'gap',NULL),(2,'dress',NULL,'gap',NULL),(4,'jeans','men','levis',NULL),(5,'White Short-sleeve Blouse','women','Loft',NULL),(6,'White short-sleeve blouse','women','Loft',NULL),(7,'White short-sleeve blouse','women','Loft',NULL),(8,'s','men','s',NULL),(9,'Blue Check Shirt','men','Gap',NULL),(10,'Blue T-Shirt','women','Target',NULL),(11,'yellow dress','women','gucci',NULL),(12,'yellow dress','women','gucci',NULL),(13,'jeans','men','levis',NULL),(14,'leather jacket','men','moschino','shirt'),(15,'White Shirt','women','Gap','shirt');
 /*!40000 ALTER TABLE `clothing` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,6 +193,7 @@ CREATE TABLE `dress` (
 
 LOCK TABLES `dress` WRITE;
 /*!40000 ALTER TABLE `dress` DISABLE KEYS */;
+INSERT INTO `dress` VALUES (11,4,20),(12,10,35);
 /*!40000 ALTER TABLE `dress` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,10 +206,12 @@ DROP TABLE IF EXISTS `end_view`;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `end_view` AS SELECT 
+ 1 AS `auctionID`,
  1 AS `name`,
  1 AS `gender`,
  1 AS `brand`,
- 1 AS `username`*/;
+ 1 AS `username`,
+ 1 AS `current_price`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -235,6 +224,7 @@ DROP TABLE IF EXISTS `pants`;
 CREATE TABLE `pants` (
   `itemID` int NOT NULL,
   `pants_size` int DEFAULT NULL,
+  `pants_style` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`itemID`),
   CONSTRAINT `pants_ibfk_1` FOREIGN KEY (`itemID`) REFERENCES `clothing` (`itemID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -246,39 +236,8 @@ CREATE TABLE `pants` (
 
 LOCK TABLES `pants` WRITE;
 /*!40000 ALTER TABLE `pants` DISABLE KEYS */;
+INSERT INTO `pants` VALUES (13,30,'jeans');
 /*!40000 ALTER TABLE `pants` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `sell`
---
-
-DROP TABLE IF EXISTS `sell`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sell` (
-  `auctionID` int NOT NULL,
-  `itemID` int NOT NULL,
-  `username` varchar(30) NOT NULL,
-  `init_price` decimal(10,2) DEFAULT NULL,
-  `bid_increment` decimal(10,2) DEFAULT NULL,
-  `min_price` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`auctionID`,`itemID`,`username`),
-  KEY `itemID` (`itemID`),
-  KEY `username` (`username`),
-  CONSTRAINT `sell_ibfk_1` FOREIGN KEY (`auctionID`) REFERENCES `auction` (`auctionID`),
-  CONSTRAINT `sell_ibfk_2` FOREIGN KEY (`itemID`) REFERENCES `clothing` (`itemID`),
-  CONSTRAINT `sell_ibfk_3` FOREIGN KEY (`username`) REFERENCES `user` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sell`
---
-
-LOCK TABLES `sell` WRITE;
-/*!40000 ALTER TABLE `sell` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sell` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -290,8 +249,8 @@ DROP TABLE IF EXISTS `shirt`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `shirt` (
   `itemID` int NOT NULL,
-  `shirt_size` char(1) DEFAULT NULL,
-  `style` varchar(20) DEFAULT NULL,
+  `shirt_size` varchar(2) DEFAULT NULL,
+  `shirt_style` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`itemID`),
   CONSTRAINT `shirt_ibfk_1` FOREIGN KEY (`itemID`) REFERENCES `clothing` (`itemID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -303,6 +262,7 @@ CREATE TABLE `shirt` (
 
 LOCK TABLES `shirt` WRITE;
 /*!40000 ALTER TABLE `shirt` DISABLE KEYS */;
+INSERT INTO `shirt` VALUES (6,'M','blouse'),(9,'l','blouse'),(10,'XS','tee'),(14,'L','sweater'),(15,'L','tee');
 /*!40000 ALTER TABLE `shirt` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,7 +308,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `end_view` AS select `c`.`name` AS `name`,`c`.`gender` AS `gender`,`c`.`brand` AS `brand`,`a`.`username` AS `username` from (`auction` `a` join `clothing` `c`) where (`a`.`itemID` = `c`.`itemID`) */;
+/*!50001 VIEW `end_view` AS select `a`.`auctionID` AS `auctionID`,`c`.`name` AS `name`,`c`.`gender` AS `gender`,`c`.`brand` AS `brand`,`a`.`username` AS `username`,`a`.`current_price` AS `current_price` from (`auction` `a` join `clothing` `c`) where (`a`.`itemID` = `c`.`itemID`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -362,4 +322,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-12 11:19:54
+-- Dump completed on 2021-08-13 21:17:23
