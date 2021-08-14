@@ -43,6 +43,7 @@ CREATE TABLE `alerts` (
 
 LOCK TABLES `alerts` WRITE;
 /*!40000 ALTER TABLE `alerts` DISABLE KEYS */;
+INSERT INTO `alerts` VALUES ('mjo',15,4,30.00,'You\'ve been outbid! Place another bid or miss out!'),('ms123',15,4,19.00,'You\'ve been outbid! Place another bid or miss out!'),('ms123',15,4,25.00,'You\'ve been outbid! Place another bid or miss out!');
 /*!40000 ALTER TABLE `alerts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,7 +82,7 @@ CREATE TABLE `auction` (
 
 LOCK TABLES `auction` WRITE;
 /*!40000 ALTER TABLE `auction` DISABLE KEYS */;
-INSERT INTO `auction` VALUES (1,12,'azhong','2021-08-12 21:04:40','2021-09-22 08:08:11',200.00,50.00,250.00,NULL,NULL,NULL),(2,13,'azhong','2021-08-12 21:28:40','2021-08-26 00:00:00',25.00,1.50,30.00,30.00,NULL,NULL),(3,14,NULL,'2021-08-13 00:01:19','2021-08-13 00:00:00',500.00,10.00,600.00,600.00,'azhong',NULL),(4,15,'azhong','2021-08-13 20:53:19','2021-08-23 00:00:00',5.00,2.00,5.00,19.00,'ms123',NULL);
+INSERT INTO `auction` VALUES (1,12,'azhong','2021-08-12 21:04:40','2021-09-22 08:08:11',200.00,50.00,250.00,NULL,NULL,NULL),(2,13,'azhong','2021-08-12 21:28:40','2021-08-26 00:00:00',25.00,1.50,30.00,30.00,NULL,NULL),(3,14,NULL,'2021-08-13 00:01:19','2021-08-13 00:00:00',500.00,10.00,600.00,600.00,'azhong',NULL),(4,15,'azhong','2021-08-13 20:53:19','2021-08-23 00:00:00',5.00,2.00,5.00,32.00,'cl',50.00);
 /*!40000 ALTER TABLE `auction` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,7 +111,7 @@ CREATE TABLE `bid` (
 
 LOCK TABLES `bid` WRITE;
 /*!40000 ALTER TABLE `bid` DISABLE KEYS */;
-INSERT INTO `bid` VALUES ('azhong',3,600.00,0),('mlou',4,7.00,0),('ms123',4,12.00,0),('ms123',4,15.00,0);
+INSERT INTO `bid` VALUES ('azhong',3,600.00,0),('cl',4,27.00,0),('cl',4,32.00,0),('cl',4,50.00,0),('mjo',4,30.00,0),('mlou',4,7.00,0),('ms123',4,12.00,0),('ms123',4,15.00,0),('ms123',4,25.00,0);
 /*!40000 ALTER TABLE `bid` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -274,7 +275,6 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `id` int NOT NULL,
   `name` varchar(50) DEFAULT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(50) DEFAULT NULL,
@@ -291,7 +291,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (0,'John Doe','admin1','password','adminstaff@buyme.com','600 William Ave. Neenah, WI 54956','admin'),(1009,'Annie Zhong','azhong','az12345','azhong@gmail.com','123 Scenic Ln, Kipling, OH','end'),(1,'Crystal Smith','customerrep1','password','csmith@buyme.com','7311 E. Fieldstone Dr. Des Moines, IA 50310','rep'),(2,'Billy Bob','customerrep2','password','bbob@buyme.com','390 Border Street Anaheim, CA 92806','rep'),(3,'Judy Mae','customerrep3','password','jmae@buyme.com','7486 Schoolhouse Ave. Hamtramck, MI 48212','rep'),(4,'Mary Williams','customerrep4','password','mwilliams@buyme.com','8628 Sugar Street Palm Harbor, FL 34683','rep'),(5,'Josh Stewart','customerrep5','password','jstewart@buyme.com','12 Grand St. Glenside, PA 19038','rep'),(1007,'Mary Lou','mlou','password','Mlou@gmail.com','123 rutgers ave','end'),(1006,'Mary','mlou@gmail.com','password','Lou','123 rutgers ave','end'),(1008,'May Smith','ms123','password','msmith@gmail.com','123 rutgers ave','end');
+INSERT INTO `user` VALUES ('John Doe','admin1','password','adminstaff@buyme.com','600 William Ave. Neenah, WI 54956','admin'),('Annie Zhong','azhong','az12345','azhong@gmail.com','123 Scenic Ln, Kipling, OH','end'),('Cindy Lauper','cl','cl123','cl@gmail.com','56 Green St.','end'),('Crystal Smith','customerrep1','password','csmith@buyme.com','7311 E. Fieldstone Dr. Des Moines, IA 50310','rep'),('Billy Bob','customerrep2','password','bbob@buyme.com','390 Border Street Anaheim, CA 92806','rep'),('Judy Mae','customerrep3','password','jmae@buyme.com','7486 Schoolhouse Ave. Hamtramck, MI 48212','rep'),('Mary Williams','customerrep4','password','mwilliams@buyme.com','8628 Sugar Street Palm Harbor, FL 34683','rep'),('Josh Stewart','customerrep5','password','jstewart@buyme.com','12 Grand St. Glenside, PA 19038','rep'),('Mindy Jones','mjo','mj123','mjones@gmail.com','957 Lake St., Georgetown','end'),('Mary Lou','mlou','password','Mlou@gmail.com','123 rutgers ave','end'),('Mary','mlou@gmail.com','password','Lou','123 rutgers ave','end'),('May Smith','ms123','password','msmith@gmail.com','123 rutgers ave','end');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -322,4 +322,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-13 21:17:23
+-- Dump completed on 2021-08-14 14:34:48
